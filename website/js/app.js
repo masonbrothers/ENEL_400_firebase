@@ -38,3 +38,8 @@ var scatterChart = new Chart(ctx, {
         }
     }
 });
+
+function pumpState()
+{
+    
+}
