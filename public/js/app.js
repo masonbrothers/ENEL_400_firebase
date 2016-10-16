@@ -1,6 +1,6 @@
 console.log("test");
 
-var ctx = document.getElementById("myChart");
+/*var ctx = document.getElementById("myChart");
 
 var scatterChart = new Chart(ctx, {
     type: 'line',
@@ -38,7 +38,7 @@ var scatterChart = new Chart(ctx, {
         }
     }
 });
-
+*/
 function pumpState()
 {
     
