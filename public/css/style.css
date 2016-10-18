@@ -1,0 +1,21 @@
+
+#navbarPageContainer
+{
+    display = none;
+}
+
+#realtimePageContainer
+{
+    display = none;
+}
+
+#historyPageContainer
+{
+    display = none;
+}
+
+#loginPageContainer
+{
+    display = block;
+}
+            
