@@ -18,4 +18,10 @@
 {
     display = block;
 }
-            
+
+.customPadding
+{
+    margin: 10px;
+    padding-left: auto;
+    padding-right: auto;
+}

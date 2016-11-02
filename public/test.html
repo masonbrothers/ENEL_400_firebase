@@ -26,7 +26,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand">Hydroponics</a> <!--href="#aboutus" -->
+                    <a class="navbar-brand" href="#">Hydroponics</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav nav-tabs navbar-nav">
@@ -37,7 +37,7 @@
 
                     <form class="navbar-form navbar-right">
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary" id ="pumpButton"></button>
+                            <input type="checkbox" checked data-toggle="toggle modal" data-target="#myModal" data-on="Pump On" data-off="Pump Off" data-onstyle="success" data-offstyle="danger">
                         </div>
                     </form>
 
@@ -46,8 +46,29 @@
             </div><!-- /.container-fluid -->
         </nav>
         
-        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+            Launch demo modal
+        </button>
 
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         
         <div id="realtimePage">
             <div class="customPadding">
@@ -101,6 +122,5 @@
 
     </body>
     <script src="js/pageController.js"></script>
-    <script src="js/pumpController.js"></script>
     <script src="js/app.js"></script>
 </html>
