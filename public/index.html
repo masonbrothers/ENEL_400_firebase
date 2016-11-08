@@ -45,10 +45,10 @@
 
             </div><!-- /.container-fluid -->
         </nav>
-        
-        
 
-        
+
+
+
         <div id="realtimePage">
             <div class="customPadding">
                 <table class="table table-condensed">
@@ -90,12 +90,56 @@
         </div>
 
         <div id="historyPage">
-            <canvas id="myChart" width="100" height="100"></canvas>
+            <!--
+<div class="customPadding">
+<table class="table table-condensed">
+<tr>
+<td>Time Reported</td>
+<td><span id="realTimeTime"></span></td>
+</tr>
+<tr>
+<td class="text-center">Ambient Temperature<br><canvas id="historyAmbientTemperature" class="makeHeightHalfWidth" width="100" height="100"></canvas></td>
+</tr>
+<tr>
+<td class="text-center">Ambient Humidity<br><canvas id="historyAmbientHumidity" width="100" height="100"></canvas></td>
+</tr>
+<tr>
+<td>Water Temperature</td>
+<td><span id="realTimeWaterTemperature"></span>&deg;C</td>
+</tr>
+<tr>
+<td>Ambient Light</td>
+<td><span id="realTimeAmbientLight"></span>lux</td>
+</tr>
+<tr>
+<td>Water Level</td>
+<td><span id="realTimeWaterLevel"></span>cm</td>
+</tr>
+<tr>
+<td>Spill Sensor</td>
+<td><span id="realTimeSpillSensor"></span></td>
+</tr>
+</table>
+<div id="realTimeWarnings" class="alert alert-success">
+No spills detected.
+</div>
+</div>
+
+-->
+
+            <div class="card">
+                <canvas id="historyAmbientTemperature" class="card-img-top chartCanvas" width="100" height="100"></canvas>
+                <div class="card-block">
+                    <h4 class="card-title">Card title</h4>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
         </div>
 
 
         <div id="loginPage">
-            <h1 class="text-center">Welcome</h1><h3 class="text-center">The University of Calgary Aquaponics Club's Hydroponic Monitioring System</h3>
+            <h1 class="text-center">Welcome</h1><h3 class="text-center">The University of Calgary Aquaponics Club's Hydroponic Monitoring System</h3>
             <div id="firebaseui-auth-container"></div>
         </div>
 

@@ -25,3 +25,9 @@
     padding-left: auto;
     padding-right: auto;
 }
+
+.chartCanvas
+{
+    max-height: 100;
+    max-width: 100;
+}

@@ -1,7 +1,6 @@
 console.log("test");
 
-var ctx = document.getElementById("myChart");
-
+var ctx = document.getElementById("historyAmbientTemperature");
 var scatterChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -38,3 +37,9 @@ var scatterChart = new Chart(ctx, {
         }
     }
 });
+
+/*
+$(".makeHeightHalfWidth").on('resize', function () {
+    $('.makeHeightHalfWidth').height($(".makeHeightHalfWidth").width()/2);
+}).resize();
+*/

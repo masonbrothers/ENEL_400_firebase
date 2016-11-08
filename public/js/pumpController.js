@@ -2,7 +2,7 @@ const PUMP_OFF_USER_ON = 0;
 const PUMP_ON_USER_ON = 1;
 const PUMP_OFF_USER_OFF = 2;
 const PUMP_ON_USER_OFF = 3;
-
+var deviceID = "";
 function getPumpState()
 {
     // STUB
@@ -23,16 +23,16 @@ function setUserState(isOn)
 {
     //Returns 1 for Updated
     //Returns 0 for Failure
-    firebase.database().ref('pumpShouldBeOn').set(isOn);
+    firebase.database().ref(deviceID + 'pumpShouldBeOn').set(isOn);
     console.log(isOn);
     updateUIStateMachine();
 }
 
 function updateUIStateMachine()
 {
-    firebase.database().ref('pumpIsOn').on('value', function(pumpData) {
+    firebase.database().ref(deviceID + 'pumpIsOn').on('value', function(pumpData) {
         console.log(pumpData.val());
-        firebase.database().ref('pumpShouldBeOn').on('value', function(userData) {
+        firebase.database().ref(deviceID + 'pumpShouldBeOn').on('value', function(userData) {
             console.log(userData.val());
             var pumpAndUserData;
             if (pumpData.val() == 0 && userData.val() == 1)
@@ -121,25 +121,25 @@ var database = firebase.database();
 function updateValues()
 {
     
-    firebase.database().ref('realTimeTime').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeTime').on('value', function(data) {
         document.getElementById("realTimeTime").innerHTML = data.val();
     });
-    firebase.database().ref('realTimeAmbientTemperature').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeAmbientTemperature').on('value', function(data) {
         document.getElementById("realTimeAmbientTemperature").innerHTML = data.val();
     });
-    firebase.database().ref('realTimeAmbientHumidity').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeAmbientHumidity').on('value', function(data) {
         document.getElementById("realTimeAmbientHumidity").innerHTML = data.val();
     });
-    firebase.database().ref('realTimeWaterTemperature').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeWaterTemperature').on('value', function(data) {
         document.getElementById("realTimeWaterTemperature").innerHTML = data.val();
     });
-    firebase.database().ref('realTimeAmbientLight').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeAmbientLight').on('value', function(data) {
         document.getElementById("realTimeAmbientLight").innerHTML = data.val();
     });
-    firebase.database().ref('realTimeWaterLevel').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeWaterLevel').on('value', function(data) {
         document.getElementById("realTimeWaterLevel").innerHTML = data.val();
     });
-    firebase.database().ref('realTimeSpillSensor').on('value', function(data) {
+    firebase.database().ref(deviceID + 'realTimeSpillSensor').on('value', function(data) {
         var valueText;
         if (data.val() == 0)
         {
