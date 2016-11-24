@@ -14,7 +14,9 @@
         <script type="text/javascript" src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
         <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
         <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
+        <link rel="stylesheet" type="text/css" href="css/chartist.min.css">
         <script type="text/javascript" src="js/firebase-auth.js"></script>
+        <script type="text/javascript" src="js/chartist.min.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-default" id="myNavbar">
@@ -127,20 +129,17 @@ No spills detected.
 
 -->
 
-            <div class="card">
-                <canvas id="historyAmbientTemperature" class="card-img-top chartCanvas" width="100" height="100"></canvas>
-                <div class="card-block">
-                    <h4 class="card-title">Card title</h4>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-            </div>
+
         </div>
 
 
         <div id="loginPage">
             <h1 class="text-center">Welcome</h1><h3 class="text-center">The University of Calgary Aquaponics Club's Hydroponic Monitoring System</h3>
             <div id="firebaseui-auth-container"></div>
+        </div>
+        
+        <div id="settings">
+
         </div>
 
     </body>

@@ -31,3 +31,16 @@
     max-height: 100;
     max-width: 100;
 }
+
+.card
+{
+    border-bottom-color: black;
+    border: 2px;
+    
+    padding: 8px;
+}
+
+.row
+{
+    width:100%;
+}

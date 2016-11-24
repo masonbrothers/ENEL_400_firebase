@@ -23,7 +23,7 @@ function currentPageSettings()
         setInterval(updateValues(), 10000);
         location.hash = '#realtime';
     }
-    
+
     if (location.hash == '#realtime')
     {
         navbarPageContainer.style.display = "block";

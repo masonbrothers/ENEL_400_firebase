@@ -54,9 +54,9 @@ function updateUIStateMachine()
                     setUserState(0);
             }
         });
-        
+
     }, function(error){
-        
+
     });
 }
 
@@ -108,8 +108,8 @@ function setUIStateMachine(pumpAndUserState)
         buttonText = "Pump on. Click to turn off.";
         warningAfterClickText = "The pump was last reported to be on. Are you sure you want to turn the pump off?";
     }
-    
-    
+
+
     return {buttonText: buttonText, warningAfterClickText: warningAfterClickText};
 
 }
@@ -120,9 +120,10 @@ var database = firebase.database();
 
 function updateValues()
 {
-    
+
     firebase.database().ref(deviceID + 'realTimeTime').on('value', function(data) {
-        document.getElementById("realTimeTime").innerHTML = data.val();
+        //var lastValue = data.val().slice(-1)[0];
+        document.getElementById("realTimeTime").innerHTML = new Date(data.val());
     });
     firebase.database().ref(deviceID + 'realTimeAmbientTemperature').on('value', function(data) {
         document.getElementById("realTimeAmbientTemperature").innerHTML = data.val();
@@ -160,13 +161,39 @@ function updateValues()
             $('#realTimeWarnings').addClass("btn-danger");
 
         }
-            
+
         document.getElementById("realTimeSpillSensor").innerHTML = valueText;
-        
+
         document.getElementById("realTimeWarnings").innerHTML = valueText;
     });
+
+    var data = {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        series: [
+            [5, 2, 4, 2, 0]
+        ]
+    };
+
+    var options = {
+        width: 300,
+        height: 200
+    };
+
+    new Chartist.Line('.ct-chart', data, options);
+
+
     updateUIStateMachine();   
 }
+/*
+$(document).ready(function{
+    $('.chartArea').each(function(i, obj) {
+        obj.onresize = function() {
+            obj.height;
+        }
+    });
+});
+*/
+
 
 function onLogIn()
 {
