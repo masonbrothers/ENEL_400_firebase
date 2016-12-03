@@ -218,6 +218,21 @@ $(document).ready(function{
 });
 */
 
+function getLastValueBeforeCounter(inputArray, callback)
+{
+    firebase.database().ref(deviceID + 'c').on('value', function(data) {
+        var counter = data.val();
+        console.log(counter);
+        
+        if (counter >= 1)
+            callback(inputArray.slice(0, counter-1).slice(-1)[0]);
+        else if (counter == 0)
+            callback(inputArray[0]);
+        else
+            callback(inputArray.slice(-1)[0]);
+    });
+}
+
 function toArray(theObject)
 {
     return $.map(theObject, function(value, index) {
