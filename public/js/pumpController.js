@@ -32,6 +32,7 @@ function updateUIStateMachine()
 {
     firebase.database().ref(deviceID + 'p').on('value', function(pumpData) { // p is pump is on
         var pumpIsOnList = toArray(pumpData.val());
+        
         console.log("MASON", pumpIsOnList)
         var pumpIsOn = pumpIsOnList.slice(-1)[0];
         console.log("Pump Is On: " + pumpIsOn);
@@ -57,7 +58,7 @@ function updateUIStateMachine()
                     setUserState(0);
             }
         });
-
+        
     }, function(error){
 
     });
