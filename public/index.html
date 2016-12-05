@@ -9,6 +9,7 @@
         <script type="text/javascript" src="js/firebase-init.js"></script>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/moment.js"></script>
         <script src="js/Chart.min.js"></script>
         <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
         <script type="text/javascript" src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
@@ -17,6 +18,7 @@
         <link rel="stylesheet" type="text/css" href="css/chartist.min.css">
         <script type="text/javascript" src="js/firebase-auth.js"></script>
         <script type="text/javascript" src="js/chartist.min.js"></script>
+
     </head>
     <body>
         <nav class="navbar navbar-default" id="myNavbar">
@@ -128,48 +130,77 @@ No spills detected.
 </div>
 
 -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary">Pump On</button>
-                <button type="button" class="btn btn-primary">Humidity</button>
-                <button type="button" class="btn btn-primary">Ambient Temperature</button>
-                <button type="button" class="btn btn-primary">Ambient Light</button>
-                <button type="button" class="btn btn-primary">Time</button>
-                <button type="button" class="btn btn-primary">Water Level</button>
-                <button type="button" class="btn btn-primary">Water Temperature</button>
-                <button type="button" class="btn btn-primary">Spill Sensor</button>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Pump On</a></li>
-                    <li><a href="#">Humidity</a></li>
-                    <li><a href="#">Ambient Temperature</a></li>
-                    <li><a href="#">Ambient Light</a></li>
-                    <li><a href="#">Time</a></li>
-                    <li><a href="#">Water Level</a></li>
-                    <li><a href="#">Water Temperature</a></li>
-                    <li><a href="#">Spill Sensor</a></li>                    
-                </ul>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card card-block">
-                        <div class="ct-chart ct-perfect-fourth chartArea"></div>
-                        <h3 class="card-title">Special title treatment</h3>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card card-block">
-                        <h3 class="card-title">Special title treatment</h3>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
-                </div>
-            </div>
+            <!--
+<div class="btn-group">
+<button type="button" class="btn btn-primary">Pump On</button>
+<button type="button" class="btn btn-primary">Humidity</button>
+<button type="button" class="btn btn-primary">Ambient Temperature</button>
+<button type="button" class="btn btn-primary">Ambient Light</button>
+<button type="button" class="btn btn-primary">Time</button>
+<button type="button" class="btn btn-primary">Water Level</button>
+<button type="button" class="btn btn-primary">Water Temperature</button>
+<button type="button" class="btn btn-primary">Spill Sensor</button>
+</div>
+<div class="dropdown">
+<button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
+<span class="caret"></span></button>
+<ul class="dropdown-menu">
+<li><a href="#">Pump On</a></li>
+<li><a href="#">Humidity</a></li>
+<li><a href="#">Ambient Temperature</a></li>
+<li><a href="#">Ambient Light</a></li>
+<li><a href="#">Time</a></li>
+<li><a href="#">Water Level</a></li>
+<li><a href="#">Water Temperature</a></li>
+<li><a href="#">Spill Sensor</a></li>                    
+</ul>
+</div>
+<div class="row">
+<div class="col-sm-6">
+<div class="card card-block">
+<div class="ct-chart ct-perfect-fourth chartArea"></div>
+<h3 class="card-title">Special title treatment</h3>
+<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+<a href="#" class="btn btn-primary">Go somewhere</a>
+</div>
+</div>
+<div class="col-sm-6">
+<div class="card card-block">
+<h3 class="card-title">Special title treatment</h3>
+<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+<a href="#" class="btn btn-primary">Go somewhere</a>
+</div>
+</div>
+</div>
+-->
 
+            <!--
+All of the following are arrays:
+p - pumpIsOn
+h - humidity
+a - ambient temperature
+l - ambient light
+t - time
+v - water level
+w - water temperature
+s - spill sensor
+These are ints:
+c - counter
+u - pump should be on
+-->
+            <div class="customPadding">
+                <select id="historySelect">
+                    <option value="a">Ambient Temperature</option>
+                    <option value="p">Pump is On</option>
+                    <option value="h">Humidity</option>
+                    <option value="l">Ambient Light</option>
+                    <option value="v">Water Level</option>
+                    <option value="w">Water Temperature</option>
+                    <option value="s">Spill Sensor</option>
+                </select>
+
+                <canvas id="myChart" width="400" height="400"></canvas>
+            </div>
         </div>
 
 

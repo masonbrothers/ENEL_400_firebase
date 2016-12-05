@@ -32,7 +32,7 @@ function updateUIStateMachine()
 {
     firebase.database().ref(deviceID + 'p').on('value', function(pumpData) { // p is pump is on
         var pumpIsOnList = toArray(pumpData.val());
-        
+
         getLastValueBeforeCounter(pumpIsOnList, function (pumpIsOn) {
             console.log("Pump Is On: " + pumpIsOn);
             firebase.database().ref(deviceID + 'u').on('value', function(userData) { // u is pump should be on
@@ -123,7 +123,7 @@ var database = firebase.database();
 
 function updateValues()
 {
-    
+
     /* 
     All of the following are arrays:
         p - pumpIsOn
@@ -138,10 +138,10 @@ function updateValues()
         c - counter
         u - pump should be on
     */
-    
+
     firebase.database().ref(deviceID + 't').on('value', function(data) {
         getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
-            document.getElementById("realTimeTime").innerHTML = new Date(lastValue*1000);
+            document.getElementById("realTimeTime").innerHTML = getDateTimeFromUnix(lastValue);
         });
     });
     firebase.database().ref(deviceID + 'a').on('value', function(data) {
@@ -198,6 +198,7 @@ function updateValues()
         });
     });
 
+    /*
     var data = {
         labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
         series: [
@@ -210,10 +211,139 @@ function updateValues()
         height: 200
     };
 
-    new Chartist.Line('.ct-chart', data, options);
+    var responsiveOptions = [
+        ['screen and (min-width: 641px) and (max-width: 1024px)', {
+            showPoint: false,
+            axisX: {
+                labelInterpolationFnc: function(value) {
+                    // Will return Mon, Tue, Wed etc. on medium screens
+                    return value.slice(0, 3);
+                }
+            }
+        }],
+        ['screen and (max-width: 640px)', {
+            showLine: false,
+            axisX: {
+                labelInterpolationFnc: function(value) {
+                    // Will return M, T, W etc. on small screens
+                    return value[0];
+                }
+            }
+        }]
+    ];
+
+    new Chartist.Line('.ct-chart', data, null, responsiveOptions);
+    */
+
+    updateUIStateMachine();
+    updateHistory();
+}
 
 
-    updateUIStateMachine();   
+function updateHistory()
+{
+    arraysToDataObject(currentHistoryGraph, function(data) {
+        updateGraph(data, labelLookup(currentHistoryGraph))
+    });
+}
+
+var currentHistoryGraph = 'a';
+
+document.getElementById("historySelect").onchange = function (data) {
+    currentHistoryGraph = document.getElementById("historySelect").value;
+    updateHistory();
+}
+
+function labelLookup(inputShort)
+{
+    if (inputShort == 'p') return 'Pump Is On (on/off)';
+    if (inputShort == 'h') return 'Humidity (%)';
+    if (inputShort == 'a') return 'Ambient Temperature (°C)';
+    if (inputShort == 'l') return 'Ambient Light (lux)';
+    if (inputShort == 't') return 'Time';
+    if (inputShort == 'v') return 'Water Level (cm)';
+    if (inputShort == 'w') return 'Water Temperature (°C)';
+    if (inputShort == 's') return 'Spill Sensor (on/off)';
+    if (inputShort == 'c') return 'Counter';
+    if (inputShort == 'u') return 'Pump Should Be On (on/off)';
+    return "Unknown";
+}
+
+function arraysToDataObject(typeToCheck,callback)
+{
+    firebase.database().ref(deviceID + 't').on('value', function(timeData) {
+        var timeArray = toArray(timeData.val());
+        firebase.database().ref(deviceID + typeToCheck).on('value', function(typeToCheckData) {
+            if (typeToCheck == currentHistoryGraph) //To fix a callback bug
+            {
+                var typeArray = toArray(typeToCheckData.val());
+                var dataToReturn = [];
+                for (var i = 0; i < typeArray.length; i++)
+                {
+                    if (timeArray[i] != null && typeArray[i] != null)
+                    {
+                        dataToReturn.push(
+                            {
+                                x:moment(getDateTimeFromUnix(timeArray[i])),
+                                y:typeArray[i]
+                            }
+                        );
+                    }
+                }
+                callback(dataToReturn);
+            }
+        });
+    });
+}
+
+var theChart;
+
+function updateGraph(dataInput, yAxisLabel)
+{
+    if (theChart !== undefined)
+        theChart.destroy();
+    var ctx = document.getElementById("myChart");
+    console.log("HERE" + yAxisLabel)
+    theChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: (yAxisLabel + " as a function of Time"),
+                data: dataInput
+            }]
+        },
+        options: {
+            animation : false,
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        format: "HH:mm",
+                        unit: 'hour',
+                        unitStepSize: 2,
+                        displayFormats: {
+                            minute: 'HH:mm', 
+                            hour: 'HH:mm'/*, 
+                            min: ,
+                            max: */
+                        },
+                    },
+                    position: 'bottom',
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Time'
+                    }
+                }],
+
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: yAxisLabel
+                    }
+                }]
+            }
+        }
+    });
 }
 /*
 $(document).ready(function{
@@ -225,12 +355,17 @@ $(document).ready(function{
 });
 */
 
+function getDateTimeFromUnix(input)
+{
+    return new Date(input*1000);
+}
+
 function getLastValueBeforeCounter(inputArray, callback)
 {
     firebase.database().ref(deviceID + 'c').on('value', function(data) {
         var counter = data.val();
         console.log(counter);
-        
+
         if (counter >= 1)
             callback(inputArray.slice(0, counter-1).slice(-1)[0]);
         else if (counter == 0)

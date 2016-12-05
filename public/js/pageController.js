@@ -13,6 +13,8 @@ $(window).on('hashchange', function() {
     currentPageSettings();
 });
 
+
+
 function currentPageSettings()
 {
     console.log(location.hash);
