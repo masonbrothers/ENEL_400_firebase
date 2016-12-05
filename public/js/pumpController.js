@@ -33,32 +33,31 @@ function updateUIStateMachine()
     firebase.database().ref(deviceID + 'p').on('value', function(pumpData) { // p is pump is on
         var pumpIsOnList = toArray(pumpData.val());
         
-        console.log("MASON", pumpIsOnList)
-        var pumpIsOn = pumpIsOnList.slice(-1)[0];
-        console.log("Pump Is On: " + pumpIsOn);
-        firebase.database().ref(deviceID + 'u').on('value', function(userData) { // u is pump should be on
-            console.log(userData.val());
-            var pumpAndUserData;
-            if (pumpIsOn == 0 && userData.val() == 1)
-                pumpAndUserData = 0;
-            if (pumpIsOn == 1 && userData.val() == 1)
-                pumpAndUserData = 1;
-            if (pumpIsOn == 0 && userData.val() == 0)
-                pumpAndUserData = 2;
-            if (pumpIsOn == 1 && userData.val() == 0)
-                pumpAndUserData = 3;
-            console.log("Pump and User Data: " + pumpAndUserData);
-            var temp = setUIStateMachine(pumpAndUserData);
-            document.getElementById("pumpButton").innerHTML = temp.buttonText;
-            document.getElementById("pumpButton").onclick = function() {
-                var shouldToggle = window.confirm(temp.warningAfterClickText);
-                if (shouldToggle && userData.val() == 0)
-                    setUserState(1);
-                if (shouldToggle && userData.val() == 1)
-                    setUserState(0);
-            }
+        getLastValueBeforeCounter(pumpIsOnList, function (pumpIsOn) {
+            console.log("Pump Is On: " + pumpIsOn);
+            firebase.database().ref(deviceID + 'u').on('value', function(userData) { // u is pump should be on
+                console.log(userData.val());
+                var pumpAndUserData;
+                if (pumpIsOn == 0 && userData.val() == 1)
+                    pumpAndUserData = 0;
+                if (pumpIsOn == 1 && userData.val() == 1)
+                    pumpAndUserData = 1;
+                if (pumpIsOn == 0 && userData.val() == 0)
+                    pumpAndUserData = 2;
+                if (pumpIsOn == 1 && userData.val() == 0)
+                    pumpAndUserData = 3;
+                console.log("Pump and User Data: " + pumpAndUserData);
+                var temp = setUIStateMachine(pumpAndUserData);
+                document.getElementById("pumpButton").innerHTML = temp.buttonText;
+                document.getElementById("pumpButton").onclick = function() {
+                    var shouldToggle = window.confirm(temp.warningAfterClickText);
+                    if (shouldToggle && userData.val() == 0)
+                        setUserState(1);
+                    if (shouldToggle && userData.val() == 1)
+                        setUserState(0);
+                }
+            });
         });
-        
     }, function(error){
 
     });
@@ -141,55 +140,62 @@ function updateValues()
     */
     
     firebase.database().ref(deviceID + 't').on('value', function(data) {
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        document.getElementById("realTimeTime").innerHTML = new Date(lastValue*1000);
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            document.getElementById("realTimeTime").innerHTML = new Date(lastValue*1000);
+        });
     });
     firebase.database().ref(deviceID + 'a').on('value', function(data) {
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        document.getElementById("realTimeAmbientTemperature").innerHTML = lastValue;
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            document.getElementById("realTimeAmbientTemperature").innerHTML = lastValue;
+        });
     });
     firebase.database().ref(deviceID + 'h').on('value', function(data) {
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        document.getElementById("realTimeAmbientHumidity").innerHTML = lastValue;
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            document.getElementById("realTimeAmbientHumidity").innerHTML = lastValue;
+        });
     });
     firebase.database().ref(deviceID + 'w').on('value', function(data) {
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        document.getElementById("realTimeWaterTemperature").innerHTML = lastValue;
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            document.getElementById("realTimeWaterTemperature").innerHTML = lastValue;
+        });
     });
     firebase.database().ref(deviceID + 'l').on('value', function(data) {
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        document.getElementById("realTimeAmbientLight").innerHTML = lastValue;
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            document.getElementById("realTimeAmbientLight").innerHTML = lastValue;
+        });
     });
     firebase.database().ref(deviceID + 'v').on('value', function(data) {
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        document.getElementById("realTimeWaterLevel").innerHTML = lastValue;
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            document.getElementById("realTimeWaterLevel").innerHTML = lastValue;
+        });
     });
     firebase.database().ref(deviceID + 's').on('value', function(data) {
-        var valueText;
-        var lastValue = toArray(data.val()).slice(-1)[0];
-        if (lastValue == 0)
-        {
-            valueText = "No spills detected.";
-            if ($('#realTimeWarnings').hasClass("btn-warning"))
-                $('#realTimeWarnings').removeClass("btn-warning");
-            if ($('#realTimeWarnings').hasClass("btn-danger"))
-                $('#realTimeWarnings').removeClass("btn-danger");
-            $('#realTimeWarnings').addClass("btn-success");
-        }
-        else
-        {
-            valueText = "There appears to be a spill!";
-            if ($('#realTimeWarnings').hasClass("btn-warning"))
-                $('#realTimeWarnings').removeClass("btn-warning");
-            if ($('#realTimeWarnings').hasClass("btn-success"))
-                $('#realTimeWarnings').removeClass("btn-success");
-            $('#realTimeWarnings').addClass("btn-danger");
+        getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            var valueText;
+            if (lastValue == 0)
+            {
+                valueText = "No spills detected.";
+                if ($('#realTimeWarnings').hasClass("btn-warning"))
+                    $('#realTimeWarnings').removeClass("btn-warning");
+                if ($('#realTimeWarnings').hasClass("btn-danger"))
+                    $('#realTimeWarnings').removeClass("btn-danger");
+                $('#realTimeWarnings').addClass("btn-success");
+            }
+            else
+            {
+                valueText = "There appears to be a spill!";
+                if ($('#realTimeWarnings').hasClass("btn-warning"))
+                    $('#realTimeWarnings').removeClass("btn-warning");
+                if ($('#realTimeWarnings').hasClass("btn-success"))
+                    $('#realTimeWarnings').removeClass("btn-success");
+                $('#realTimeWarnings').addClass("btn-danger");
 
-        }
+            }
 
-        document.getElementById("realTimeSpillSensor").innerHTML = valueText;
+            document.getElementById("realTimeSpillSensor").innerHTML = valueText;
 
-        document.getElementById("realTimeWarnings").innerHTML = valueText;
+            document.getElementById("realTimeWarnings").innerHTML = valueText;
+        });
     });
 
     var data = {
