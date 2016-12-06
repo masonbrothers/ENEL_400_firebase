@@ -319,6 +319,47 @@ function arraysToDataObject(typeToCheck,minValue,callback)
 
 var theChart;
 
+function deleteAll()
+{
+    /*
+    p - pumpIsOn
+    h - humidity
+    a - ambient temperature
+    l - ambient light
+    t - time
+    v - water level
+    w - water temperature
+    s - spill sensor
+    */
+    firebase.database().ref(deviceID + 'p').remove();
+    firebase.database().ref(deviceID + 'h').remove();
+    firebase.database().ref(deviceID + 'a').remove();
+    firebase.database().ref(deviceID + 'l').remove();
+    firebase.database().ref(deviceID + 't').remove();
+    firebase.database().ref(deviceID + 'v').remove();
+    firebase.database().ref(deviceID + 'w').remove();
+    firebase.database().ref(deviceID + 's').remove();
+    firebase.database().ref(deviceID + 'e').remove();
+    firebase.database().ref(deviceID + 'c').set(0);
+    firebase.database().ref(deviceID + 'u').set(0);
+}
+
+function newDevice()
+{
+    /*
+    p - pumpIsOn
+    h - humidity
+    a - ambient temperature
+    l - ambient light
+    t - time
+    v - water level
+    w - water temperature
+    s - spill sensor
+    */
+    firebase.database().ref(deviceID + 'c').set(0);
+    firebase.database().ref(deviceID + 'u').set(0);
+}
+
 function updateGraph(dataInput, yAxisLabel)
 {
     if (theChart !== undefined)
@@ -388,13 +429,19 @@ function getLastValueBeforeCounter(inputArray, callback)
     firebase.database().ref(deviceID + 'c').on('value', function(data) {
         var counter = data.val();
         console.log(counter);
-
+        
+        /*
         if (counter >= 1)
             callback(inputArray.slice(0, counter-1).slice(-1)[0]);
         else if (counter == 0)
             callback(inputArray[0]);
         else
             callback(inputArray.slice(-1)[0]);
+        */
+        if (typeof inputArray[counter] !== undefined)
+            callback(inputArray.slice(0, counter).slice(-1)[0]);
+        else
+            callback(inputArray.slice(0, counter-1).slice(-1)[0]);
     });
 }
 
