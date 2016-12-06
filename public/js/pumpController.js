@@ -248,8 +248,8 @@ function updateValues()
 
 function updateHistory()
 {
-    arraysToDataObject(currentHistoryGraph, function(data) {
-        updateGraph(data, labelLookup(currentHistoryGraph))
+    arraysToDataObject(currentHistoryGraph, minValueLookup(currentHistoryGraph), function(data) {
+        updateGraph(data, labelLookup(currentHistoryGraph));
     });
 }
 
@@ -275,7 +275,22 @@ function labelLookup(inputShort)
     return "Unknown";
 }
 
-function arraysToDataObject(typeToCheck,callback)
+function minValueLookup(inputShort)
+{
+    if (inputShort == 'p') return 0;
+    if (inputShort == 'h') return 0;
+    if (inputShort == 'a') return -273.15;
+    if (inputShort == 'l') return 0;
+    if (inputShort == 't') return 0;
+    if (inputShort == 'v') return 0;
+    if (inputShort == 'w') return -273.15;
+    if (inputShort == 's') return 0;
+    if (inputShort == 'c') return 0;
+    if (inputShort == 'u') return 0;
+    return -Infinity;
+}
+
+function arraysToDataObject(typeToCheck,minValue,callback)
 {
     firebase.database().ref(deviceID + 't').on('value', function(timeData) {
         var timeArray = toArray(timeData.val());
@@ -286,7 +301,7 @@ function arraysToDataObject(typeToCheck,callback)
                 var dataToReturn = [];
                 for (var i = 0; i < typeArray.length; i++)
                 {
-                    if (timeArray[i] != null && typeArray[i] != null)
+                    if (timeArray[i] != null && typeArray[i] != null && typeArray[i] > minValue)
                     {
                         dataToReturn.push(
                             {
