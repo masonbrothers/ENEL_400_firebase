@@ -1,8 +1,12 @@
+const HOUR_OFFSET = 7;
+
+
 const PUMP_OFF_USER_ON = 0;
 const PUMP_ON_USER_ON = 1;
 const PUMP_OFF_USER_OFF = 2;
 const PUMP_ON_USER_OFF = 3;
 var deviceID = "club01/";
+/*
 function getPumpState()
 {
     // STUB
@@ -18,7 +22,7 @@ function getUserState()
     //Returns 0 for Off
     return 0;
 }
-
+*/
 function setUserState(isOn)
 {
     //Returns 1 for Updated
@@ -117,9 +121,6 @@ function setUIStateMachine(pumpAndUserState)
 
 }
 
-var database = firebase.database();
-
-
 
 function updateValues()
 {
@@ -171,30 +172,35 @@ function updateValues()
     });
     firebase.database().ref(deviceID + 's').on('value', function(data) {
         getLastValueBeforeCounter(toArray(data.val()), function (lastValue) {
+            
+            /*
             var valueText;
             if (lastValue == 0)
             {
                 valueText = "No spills detected.";
-                if ($('#realTimeWarnings').hasClass("btn-warning"))
-                    $('#realTimeWarnings').removeClass("btn-warning");
-                if ($('#realTimeWarnings').hasClass("btn-danger"))
-                    $('#realTimeWarnings').removeClass("btn-danger");
-                $('#realTimeWarnings').addClass("btn-success");
+                if ($('#realTimeWarnings').hasClass("alert-warning"))
+                    $('#realTimeWarnings').removeClass("alert-warning");
+                if ($('#realTimeWarnings').hasClass("alert-danger"))
+                    $('#realTimeWarnings').removeClass("alert-danger");
+                $('#realTimeWarnings').addClass("alert-success");
             }
             else
             {
                 valueText = "There appears to be a spill!";
-                if ($('#realTimeWarnings').hasClass("btn-warning"))
-                    $('#realTimeWarnings').removeClass("btn-warning");
-                if ($('#realTimeWarnings').hasClass("btn-success"))
-                    $('#realTimeWarnings').removeClass("btn-success");
-                $('#realTimeWarnings').addClass("btn-danger");
+                if ($('#realTimeWarnings').hasClass("alert-warning"))
+                    $('#realTimeWarnings').removeClass("alert-warning");
+                if ($('#realTimeWarnings').hasClass("alert-success"))
+                    $('#realTimeWarnings').removeClass("alert-success");
+                $('#realTimeWarnings').addClass("alert-danger");
 
             }
 
             document.getElementById("realTimeSpillSensor").innerHTML = valueText;
 
             document.getElementById("realTimeWarnings").innerHTML = valueText;
+            */
+            document.getElementById("realTimeWarnings").innerHTML = "Feature Arriving Q1 2017";
+            document.getElementById("realTimeSpillSensor").innerHTML = "Feature Arriving Q1 2017";
         });
     });
 
@@ -357,7 +363,9 @@ $(document).ready(function{
 
 function getDateTimeFromUnix(input)
 {
-    return new Date(input*1000);
+    var dateTime = new Date(input*1000);
+    dateTime.setHours(dateTime.getHours() + HOUR_OFFSET);
+    return dateTime;
 }
 
 function getLastValueBeforeCounter(inputArray, callback)
